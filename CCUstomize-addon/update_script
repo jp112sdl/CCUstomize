@@ -1,0 +1,25 @@
+#!/bin/sh
+ADDON_NAME=CCUstomize
+RC_DIR=/usr/local/etc/config/rc.d
+WWW_DIR=/usr/local/etc/config/addons/www/$ADDON_NAME
+ADDON_DIR=/usr/local/addons/$ADDON_NAME
+
+# Startscript anlegen
+cp -af rc.d/$ADDON_NAME ${RC_DIR}/
+chmod +x ${RC_DIR}/$ADDON_NAME
+
+# Addon-Verzeichnis anlegen
+mkdir -p ${ADDON_DIR}
+cp -af addon/* ${ADDON_DIR}
+chmod 755 ${ADDON_DIR}
+
+# Symbolic Links
+rm -rf ${WWW_DIR}
+ln -sf ${ADDON_DIR} ${WWW_DIR}
+
+# Startskript ausführen
+${RC_DIR}/$ADDON_NAME start
+
+# sync filesystem to make sure all changes are written to disk
+sync
+exit 0

@@ -1,0 +1,11 @@
+--- /www/webui/style.css.orig
++++ /www/webui/style.css
+@@ -6328,7 +6328,7 @@
+ }
+ 
+ .CLASS03902 {
++	/*overflow:auto;*/
+-	overflow:auto;
+ 	margin-left:10px;
+ 	margin-right:2px;
+ }

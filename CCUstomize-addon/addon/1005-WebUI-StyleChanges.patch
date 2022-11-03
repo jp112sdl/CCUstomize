@@ -1,0 +1,120 @@
+--- ./www/rega/pages/tabs/control/systemProtocol.htm.orig
++++ ./www/rega/pages/tabs/control/systemProtocol.htm
+@@ -43,9 +43,9 @@
+ 
+ <table class="tTable filterTable" id="SysProtoList" cellspacing="0" cellpadding="0" style="display:none">
+   <colgroup>
+-    <col />
+-    <col />
+-    <col />
++    <col style="width:10%"; />
++    <col style="width:10%"; />
++    <col style="width:15%"; />
+     <col />
+   </colgroup>
+   <thead id="histlistheader">
+--- ./www/webui/js/lang/de/translate.lang.js.orig
++++ ./www/webui/js/lang/de/translate.lang.js
+@@ -59,6 +59,19 @@
+     "menuSettingsPage" : "Einstellungen",
+     "menuHelpPage" : "Hilfe",
+     "menuNewDevicesPage" : "Ger%E4te anlernen",
++    "menuSysControlPage" : "Systemsteuerung",
++    "submenuConfMaintenance" : "Zentralenwartung",
++    "submenuConfSecurity" : "Sicherheit",
++    "submenuConfTimePosition" : "Zeit-/Positionseinstellungen",
++    "submenuConfNetwork" : "Netzwerkeinstellungen",
++    "submenuConfFirewall" : "Firewall konfigurieren",
++    "submenuConfLANGateway" : "LAN Gateway Konfiguration",
++    "submenuConfSoftware" : "Zusatzsoftware",
++    "submenuConfGeneral" : "Allgemeine Einstellungen",
++    "submenuConfSecurityAssistant" : "Sicherheitsassistent",
++    "submenuConfCoupling" : "Kopplungen",
++    "submenuConfIncompatibleAccessPoints" : "AccessPoints m. inkompatibler FW",
++    "submenuConfAdvancedSettings" : "Erweiterte Einstellungen",
+     "submenuDevices" : "Ger%E4te",
+     "submenuRooms" : "R%E4ume",
+     "submenuFunction" : "Gewerke",
+--- ./www/webui/js/lang/en/translate.lang.js.orig
++++ ./www/webui/js/lang/en/translate.lang.js
+@@ -58,6 +58,19 @@
+     "menuSettingsPage" : "Settings",
+     "menuHelpPage" : "Help",
+     "menuNewDevicesPage" : "Teach-in devices",
++    "menuSysControlPage" : "Control panel",
++    "submenuConfMaintenance" : "CCU maintenance",
++    "submenuConfSecurity" : "Security",
++    "submenuConfTimePosition" : "Time-/position settings",
++    "submenuConfNetwork" : "Network settings",
++    "submenuConfFirewall" : "Configure firewall",
++    "submenuConfLANGateway" : "LAN Gateway configuration",
++    "submenuConfSoftware" : "Additional software",
++    "submenuConfGeneral" : "General settings",
++    "submenuConfSecurityAssistant" : "Security wizard",
++    "submenuConfCoupling" : "Connections",
++    "submenuConfIncompatibleAccessPoints" : "Update Access Points with incompatible FW",
++    "submenuConfAdvancedSettings" : "Advanced settings",
+     "submenuDevices" : "Devices",
+     "submenuRooms" : "Rooms",
+     "submenuFunction" : "Functions",
+--- ./www/webui/js/mainmenu/admin.js.orig
++++ ./www/webui/js/mainmenu/admin.js
+@@ -40,6 +40,21 @@
+     {id: "submenuSysVar"      , action: function() { ConfigData.check(function() { WebUI.enter(VariableListPage); }); }  }
+ 
+   ]},
++  {id: "menuSysControlPage", align: "left", action: function() { ConfigData.check(function() { WebUI.enter(SystemControlPage); }); }, submenu:
++  [
++   {id: "submenuConfIncompatibleAccessPoints"     , action: function() { showAccessPoint(); } }  ,
++   {id: "submenuConfGeneral"     , action: function() { showGeneralSettingsCP(); } }  ,
++   {id: "submenuConfAdvancedSettings"     , action: function() { showAdvancedSettingsCP(); } }    , 
++   {id: "submenuConfFirewall"     , action: function() { new FirewallConfigDialog(); } }  ,
++   {id: "submenuConfCoupling"     , action: function() { showCouplingCP();  } }  ,
++   {id: "submenuConfLANGateway"     , action: function() { WebUI.enter(BidcosRfPage); } } , 
++   {id: "submenuConfNetwork"     , action: function() {showNetworkCP(); } }  ,
++   {id: "submenuConfSecurity"     , action: function() { showSecurityCP(); } },
++   {id: "submenuConfSecurityAssistant"     , action: function() { new DialogChooseSecuritySettings(); } }  ,
++   {id: "submenuConfTimePosition"     , action: function() { showTimeCP(); } }  ,
++   {id: "submenuConfMaintenance"     , action: function() { showMaintenanceCP(); } },
++   {id: "submenuConfSoftware"     , action: function() { showSoftwareCP(); } }  
++  ]},
+   {id: "menuHelpPage"          , align: "right", action: function() { WebUI.enter(HelpPage); }, submenu: [ ]},
+   {id: "menuNewDevicesPage", align: "right", action: function() { ConfigData.check(function() { showAddDeviceCP(false);/*true activates the install mode when entering the page*/ }); }, submenu: [ ]}
+ ]
+--- ./www/webui/style.css.orig
++++ ./www/webui/style.css
+@@ -95,7 +95,7 @@
+ }
+ 
+ tr.UserSysVars:nth-child(odd) {
+-  background-color: $_(activeBackground);
++  /*background-color: $_(activeBackground);*/
+ }
+ 
+ html,body
+@@ -470,6 +470,7 @@
+   text-align:center;
+   border:solid 1px $_(black); /* black */
+   color: $_(textColorB); /* black */
++  height: 30px;
+ }
+ 
+ .filterTable .leftAlign {
+@@ -6327,7 +6328,7 @@
+ }
+ 
+ .CLASS03902 {
+-	overflow:auto;
++	/*overflow:auto;*/
+ 	margin-left:10px;
+ 	margin-right:2px;
+ }
+@@ -6510,7 +6511,7 @@
+ }
+ 
+ .CLASS04201 {
+-	overflow:auto;
++	/*overflow:auto;*/
+ 	margin-left:10px;
+ 	margin-right:2px;
+ }

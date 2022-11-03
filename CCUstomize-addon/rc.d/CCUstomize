@@ -1,0 +1,104 @@
+#!/bin/sh
+ADDON_NAME=`basename "$0"`
+
+ADDON_DIR=/usr/local/addons/${ADDON_NAME}
+
+case "$1" in
+  ""|start)
+    echo "Running ${ADDON_NAME}"
+    mount -o remount,rw /
+    
+    # show rf address in device list
+    #SEARCH="showRFAddress = (jQuery.url().param('showRFAddress') == \"true\") ? true : false;"
+    #REPLACE="showRFAddress = true;"
+    #sed -i "s/$SEARCH/$REPLACE/g" /www/rega/pages/index.htm
+
+    find /firmware/rftypes -name "rf_*.xml" -exec sed -i s/paired=\"true\"/paired=\"false\"/g {} +
+    
+    # Remove NEOServer
+    if [ -e /etc/init.d/S97NeoServer ]; then
+      rm /etc/init.d/S97NeoServer
+    fi
+    
+    if [ -e /usr/local/addons/mediola ]; then
+      rm -r /usr/local/addons/mediola
+    fi
+    
+    if [ "`grep NEOServer /usr/local/etc/config/hm_addons.cfg`" ]; then
+      SEARCH="mediola {CONFIG_URL \/addons\/mediola\/index.html CONFIG_DESCRIPTION {de {<li>NEO Server<\/li>} en {<li>NEO Server<\/li>}} ID mediola CONFIG_NAME NEOServer}"
+      sed -i "s/\($SEARCH\)//g" /usr/local/etc/config/hm_addons.cfg
+    fi
+    # END Remove NEOServer
+    
+    # Remove CloudMatic
+    if [ -e /etc/init.d/S97CloudMatic ]; then
+      rm /etc/init.d/S97CloudMatic
+    fi
+    
+    if [ "`grep CloudMatic /usr/local/etc/config/hm_addons.cfg`" ]; then
+      SEARCH="mh {CONFIG_URL \/addons\/mh\/index.cgi CONFIG_DESCRIPTION {de {<li>Sicherer VPN Fernzugriff<\/li><li>SMS Versand<\/li><li>Versand von PUSH Nachrichten<\/li><li>Mail Versand per Skript<\/li>} en {<li>Secure VPN remote access<\/li><li>Send SMS Messages<\/li><li>Send push notifications<\/li><li>Send dynamic eMails<\/li>}} ID mh CONFIG_NAME CloudMatic}"
+      sed -i "s/\($SEARCH\)//g" /usr/local/etc/config/hm_addons.cfg
+    fi  
+    # END Remove CloudMatic
+
+    cd ${ADDON_DIR}
+    cp -ar www/* /www/
+    [[ ! -f /usr/local/addons/ffmpeg ]] && ln -s /usr/local/addons/redmatic/bin/ffmpeg /usr/local/addons/ffmpeg
+    #sed -i 's/<title>HomeMatic WebUI<\/title>/<title>Produktivsystem HomeMatic<\/title>/g' /www/rega/pages/index.htm
+    #sed -e '/updateDCVars.tcl/ s/^#*/#/' -i /etc/crontab.root
+    #sed -e '/cronBackup.sh/ s/^#*/#/' -i /etc/crontab.root
+    #/etc/init.d/S98crond restart
+    
+    ### autom. Backup bei FW Update default: NO
+    #sed -i 's/name="accept" value="yes" checked="true"/name="accept" value="yes"/g' /www/config/cp_maintenance.cgi
+    
+    ### autom. Backup bei FW Update komplett entfernen
+    sed -i 's/#set action "acceptEula"/set action "acceptEula"/g' /www/config/cp_maintenance.cgi
+    sed -i 's/ set action "askCreateBackup"/ #set action "askCreateBackup"/g' /www/config/cp_maintenance.cgi
+    
+    # WriteLine("Hallo Welt"); aus Skript-Editor entfernen
+    sed -i '/dialogScriptExecuterHelloWorld/d' /www/webui/webui.js 
+    
+    cd /www
+    #patch -N -p2 -i ${ADDON_DIR}/1001-WebUI-FooterButtons.patch 
+    patch -N -p2 -i ${ADDON_DIR}/1004-WebUI-DisableOkPopup.patch 
+    patch -N -p2 -i ${ADDON_DIR}/1005-WebUI-StyleChanges.patch 
+    patch -N -p2 -i ${ADDON_DIR}/1006-WebUI-RegexFilter.patch 
+
+    sync
+    mount -o remount,ro /
+    echo "Finished."
+  ;;
+
+	stop)
+		echo "Nothing to stop..."
+	;;
+
+	uninstall)
+		echo "Not implemented :)"
+    	;;
+  
+	restart|reload)
+  	  # Operations to stop and start (restart) the addon
+  	  stop
+  	  sleep 2
+  	  start
+    	;;
+
+	info)
+	  echo "Info: <center><b>CCUstomize Addon</b></center><br />" 
+	  echo "Version: 0.3.65.11.0001"                                                                                                                                                                                       
+	  echo "Name: CCUstomize Addon"                                                                                                                                                                                                        
+	  echo "Operations: uninstall"                                                                                                                                                                                                      
+	  #echo "Config-Url: ${CONFIG_URL}"                                                                                                                                                                                                 
+	  #echo "Update: /addons/${ADDON_NAME}/update-check.cgi"
+	;;
+	
+	*)
+		echo "Usage: $ADDON_NAME {start|stop|restart|info|uninstall}" >&2
+		exit 1
+    	;;
+
+esac
+
+exit $?
