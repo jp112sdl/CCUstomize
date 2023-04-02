@@ -36,14 +36,7 @@ case "$1" in
     cd ${ADDON_DIR}
     cp -ar www/* /www/
     [[ ! -f /usr/local/addons/ffmpeg ]] && ln -s /usr/local/addons/redmatic/bin/ffmpeg /usr/local/addons/ffmpeg
-    #sed -i 's/<title>HomeMatic WebUI<\/title>/<title>Produktivsystem HomeMatic<\/title>/g' /www/rega/pages/index.htm
-    #sed -e '/updateDCVars.tcl/ s/^#*/#/' -i /etc/crontab.root
-    #sed -e '/cronBackup.sh/ s/^#*/#/' -i /etc/crontab.root
-    #/etc/init.d/S98crond restart
-    
-    ### autom. Backup bei FW Update default: NO
-    #sed -i 's/name="accept" value="yes" checked="true"/name="accept" value="yes"/g' /www/config/cp_maintenance.cgi
-    
+
     ### autom. Backup bei FW Update komplett entfernen
     sed -i 's/#set action "acceptEula"/set action "acceptEula"/g' /www/config/cp_maintenance.cgi
     sed -i 's/ set action "askCreateBackup"/ #set action "askCreateBackup"/g' /www/config/cp_maintenance.cgi
