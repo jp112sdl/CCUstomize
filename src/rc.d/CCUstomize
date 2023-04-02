@@ -49,6 +49,17 @@ case "$1" in
     patch -N -p2 -i ${ADDON_DIR}/1004-WebUI-DisableOkPopup.patch 
     patch -N -p2 -i ${ADDON_DIR}/1005-WebUI-StyleChanges.patch 
     #patch -N -p2 -i ${ADDON_DIR}/1006-WebUI-RegexFilter.patch
+    
+    TWEAKS_FILE=/etc/config/tweaks
+    if [ -e $TWEAKS_FILE ]; then
+      grep -q SET_COLOR_WEBUI $TWEAKS_FILE
+      if [ $? -eq 1 ]; then
+        echo "SET_COLOR_WEBUI=1" >> $TWEAKS_FILE
+      fi
+    else
+      echo "SET_COLOR_WEBUI=1" >> $TWEAKS_FILE
+    fi
+    patch -N -p2 -i ${ADDON_DIR}/1007-WebUI-ExtendWebUIColorScheme.patch 
 
     sync
     mount -o remount,ro /
@@ -72,7 +83,7 @@ case "$1" in
 
 	info)
 	  echo "Info: <center><b>CCUstomize Addon</b></center><br />" 
-	  echo "Version: 0.3.65.11.0001"                                                                                                                                                                                       
+	  echo "Version: 0.3.67.10.0001"                                                                                                                                                                                       
 	  echo "Name: CCUstomize Addon"                                                                                                                                                                                                        
 	  echo "Operations: uninstall"                                                                                                                                                                                                      
 	  #echo "Config-Url: ${CONFIG_URL}"                                                                                                                                                                                                 

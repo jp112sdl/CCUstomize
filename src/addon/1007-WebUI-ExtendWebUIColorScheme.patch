@@ -1,0 +1,91 @@
+--- ./www/webui/webui.js.orig
++++ ./www/webui/webui.js
+@@ -33614,9 +33614,50 @@
+ 
+ setColorWebUI = function() {
+   var colorKeys = [
+-    "background",
++    "active",
+     "activeBackground",
++    "attention",
++    "background",
++//    "backgroundEnd",
++//    "backgroundStart",
++    "black",
++    "blue",
++    "borderColor",
++//    "channelBackground",
++//    "channelBorder",
++//    "channelHighlight",
++    "clickable",
+     "contentBackground",
++    "darkgray",
++    "deviceListRowHighlight",
++    "gray",
++    "grayText",
++    "inactiveBackground",
++    "inactiveButton",
++    "link",
++//    "logoutButton",
++//    "mainMenuBackground",
++//    "messagesBackground",
++    "navBarSeparator",
++    "okSignal",
++    "pgmBackColorInactive",
++    "pgmTextColorInactive",
++//    "profile",
++//    "profileActive",
++    "programEven",
++    "programOdd",
++    "progressbarBackground",
++    "progressbarHighlight",
++    "progressbarText",
++    "red",
++    "shutterOpeningDegree",
++    "subMenuBackground",
++    "subMenuHighlight",
++//    "testActive",
++//    "testOk",
++    "textColorA",
++    "textColorB",
++    "warnSignal",
+     "white"
+   ];
+ 
+@@ -33635,10 +33676,24 @@
+     });
+   };
+ 
+-  var html = "<table>";
+-  jQuery.each(colorKeys, function(index, val) {
+-    html += "<tr><td>"+val+"</td><td><input id='colorPicker_" + val +"' class='_hidden' size='5'/></td></tr>";
+-  });
++  var html = "<table width='100%' border='1'>";
++  for (let i = 0; i < colorKeys.length; i++) {
++    html += "<tr class='CLASS21115'>";
++    for (let col = 0; col < 3; col++) {
++      console.log(col+i);
++      if (i+col < colorKeys.length) {
++        html+="<td align='right' style='border: solid 1px #000000'><label for='"+colorKeys[i + col]+"'>"+colorKeys[i + col]+"</label> <input id='colorPicker_" + colorKeys[i + col] +"' class='_hidden' size='5'/></td>";
++      }
++    }
++    i++;
++    i++;
++    html+="</tr>";
++  }
++  //html+="<tr><td colspan=6 align='center' class='CLASS21115'><div class='StdButton CLASS04907' onclick='resetColorWebUI()';>Reset Defaults</div></td></tr>";
++  
++  //jQuery.each(colorKeys, function(index, val) {
++  //  html += "<tr><td>"+val+"</td><td><input id='colorPicker_" + val +"' class='_hidden' size='5'/></td></tr>";
++  //});
+ 
+   html += "</table>";
+ 
+@@ -33652,6 +33707,7 @@
+   dlg.btnYesHide();
+   dlg.btnTextNo(translateKey("btnCancel"));
+   dlg.btnTextYes(translateKey("btnOk"));
++  dlg.setWidth(710);
+ 
+   dlg.run = function() {
+     jQuery.each(colorKeys, function(index, val) {
