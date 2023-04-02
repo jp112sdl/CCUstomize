@@ -23,22 +23,14 @@ case "$1" in
     if [ -e /usr/local/addons/mediola ]; then
       rm -r /usr/local/addons/mediola
     fi
-    
-    if [ "`grep NEOServer /usr/local/etc/config/hm_addons.cfg`" ]; then
-      SEARCH="mediola {CONFIG_URL \/addons\/mediola\/index.html CONFIG_DESCRIPTION {de {<li>NEO Server<\/li>} en {<li>NEO Server<\/li>}} ID mediola CONFIG_NAME NEOServer}"
-      sed -i "s/\($SEARCH\)//g" /usr/local/etc/config/hm_addons.cfg
-    fi
+    echo 'package require HomeMatic; ::HomeMatic::Addon::RemoveConfigPage mediola'|tclsh
     # END Remove NEOServer
     
     # Remove CloudMatic
     if [ -e /etc/init.d/S97CloudMatic ]; then
       rm /etc/init.d/S97CloudMatic
     fi
-    
-    if [ "`grep CloudMatic /usr/local/etc/config/hm_addons.cfg`" ]; then
-      SEARCH="mh {CONFIG_URL \/addons\/mh\/index.cgi CONFIG_DESCRIPTION {de {<li>Sicherer VPN Fernzugriff<\/li><li>SMS Versand<\/li><li>Versand von PUSH Nachrichten<\/li><li>Mail Versand per Skript<\/li>} en {<li>Secure VPN remote access<\/li><li>Send SMS Messages<\/li><li>Send push notifications<\/li><li>Send dynamic eMails<\/li>}} ID mh CONFIG_NAME CloudMatic}"
-      sed -i "s/\($SEARCH\)//g" /usr/local/etc/config/hm_addons.cfg
-    fi  
+    echo 'package require HomeMatic; ::HomeMatic::Addon::RemoveConfigPage mh'|tclsh
     # END Remove CloudMatic
 
     cd ${ADDON_DIR}
