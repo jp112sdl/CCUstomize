@@ -48,7 +48,7 @@ case "$1" in
     #patch -N -p2 -i ${ADDON_DIR}/1001-WebUI-FooterButtons.patch 
     patch -N -p2 -i ${ADDON_DIR}/1004-WebUI-DisableOkPopup.patch 
     patch -N -p2 -i ${ADDON_DIR}/1005-WebUI-StyleChanges.patch 
-    patch -N -p2 -i ${ADDON_DIR}/1006-WebUI-RegexFilter.patch 
+    #patch -N -p2 -i ${ADDON_DIR}/1006-WebUI-RegexFilter.patch
 
     sync
     mount -o remount,ro /
