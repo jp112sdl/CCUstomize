@@ -38,8 +38,7 @@ case "$1" in
     [[ ! -f /usr/local/addons/ffmpeg ]] && ln -s /usr/local/addons/redmatic/bin/ffmpeg /usr/local/addons/ffmpeg
 
     ### autom. Backup bei FW Update komplett entfernen
-    sed -i 's/#set action "acceptEula"/set action "acceptEula"/g' /www/config/cp_maintenance.cgi
-    sed -i 's/ set action "askCreateBackup"/ #set action "askCreateBackup"/g' /www/config/cp_maintenance.cgi
+    sed -i 's/ set action "askCreateBackup"/ set action "firmware_update_confirm"/g' /www/config/cp_maintenance.cgi
     
     # WriteLine("Hallo Welt"); aus Skript-Editor entfernen
     sed -i '/dialogScriptExecuterHelloWorld/d' /www/webui/webui.js 
@@ -83,7 +82,7 @@ case "$1" in
 
 	info)
 	  echo "Info: <center><b>CCUstomize Addon</b></center><br />" 
-	  echo "Version: 0.3.67.10.0001"                                                                                                                                                                                       
+	  echo "Version: 0.3.75.06.0001"                                                                                                                                                                                       
 	  echo "Name: CCUstomize Addon"                                                                                                                                                                                                        
 	  echo "Operations: uninstall"                                                                                                                                                                                                      
 	  #echo "Config-Url: ${CONFIG_URL}"                                                                                                                                                                                                 
