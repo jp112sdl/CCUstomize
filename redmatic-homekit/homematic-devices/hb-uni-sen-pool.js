@@ -5,13 +5,13 @@ module.exports = class HbUniSenTemp extends Accessory {
         const {ccu} = node;
 
         const channels = config.description.CHILDREN;
-        const name = ccu.channelNames[channels[i]];
 
         for (let i = 1; i <= 2; i++) {
             if (!this.option(i)) {
                 continue;
             }
 
+            const name = ccu.channelNames[channels[i]];
             const dp = config.iface + '.' + channels[i] + '.TEMPERATURE';
 
             this.addService('TemperatureSensor', name)
@@ -24,6 +24,7 @@ module.exports = class HbUniSenTemp extends Accessory {
                 continue;
             }
 
+            const name = ccu.channelNames[channels[i]];
             const dp = config.iface + '.' + channels[i] + '.STATE';
 
             this.addService('ContactSensor', name)
@@ -37,6 +38,7 @@ module.exports = class HbUniSenTemp extends Accessory {
                 continue;
             }
 
+            const name = ccu.channelNames[channels[i]];
             const dp = config.iface + '.' + channels[i] + '.STATE';
 
             this.addService('Switch', name)
