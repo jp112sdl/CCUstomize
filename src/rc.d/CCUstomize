@@ -48,6 +48,7 @@ case "$1" in
     patch -N -p2 -i ${ADDON_DIR}/1004-WebUI-DisableOkPopup.patch 
     patch -N -p2 -i ${ADDON_DIR}/1005-WebUI-StyleChanges.patch 
     #patch -N -p2 -i ${ADDON_DIR}/1006-WebUI-RegexFilter.patch
+    patch -N -p2 -i ${ADDON_DIR}/1008-WebUI-StickyHeader.patch
     
     TWEAKS_FILE=/etc/config/tweaks
     if [ -e $TWEAKS_FILE ]; then
@@ -82,7 +83,7 @@ case "$1" in
 
 	info)
 	  echo "Info: <center><b>CCUstomize Addon</b></center><br />" 
-	  echo "Version: 0.3.75.06.0001"                                                                                                                                                                                       
+	  echo "Version: 0.3.83.06.0001"                                                                                                                                                                                       
 	  echo "Name: CCUstomize Addon"                                                                                                                                                                                                        
 	  echo "Operations: uninstall"                                                                                                                                                                                                      
 	  #echo "Config-Url: ${CONFIG_URL}"                                                                                                                                                                                                 
