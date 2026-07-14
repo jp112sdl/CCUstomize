@@ -1,0 +1,109 @@
+--- ./www/rega/pages/tabs/admin/systemvars.htm.orig
++++ ./www/rega/pages/tabs/admin/systemvars.htm
+@@ -59,6 +59,7 @@
+ <div id="svOffset" style="display:none"></div>
+ <table id="sysVars" cellspacing="0" cellpadding="0" class="tTable" style="display:none">
+ <colgroup>
++  <col/>
+   <col />
+   <col />
+   <col />
+@@ -69,6 +70,10 @@
+   <col style="width:100px;" />
+ </colgroup>
+ <tr>
++  <%string sCssName="Sort"; if(system.GetSessionVar("sessionLS")=="id"){sCssName="SortSelected";} %>
++
++  <th class="thCell CLASS05200"><div id="name" class="pt11 <%Write(sCssName); %>" onclick="DivSort('id');">${thIseID}</div></th>
++
+   <%string sCssName="Sort"; if(system.GetSessionVar("sessionLS")=="name"){sCssName="SortSelected";} %>
+   <th class="thCell CLASS05200"><div id="name" class="pt11 <%Write(sCssName); %>" onclick="DivSort('name');">${thName}</div></th>
+   <%string sCssName="Sort"; if(system.GetSessionVar("sessionLS")=="desc"){sCssName="SortSelected";} %>
+@@ -84,6 +89,7 @@
+   <th class="thCell">${thLink}</th>
+ </tr>
+ <tr class="CLASS05201">
++  <td class="CLASS05205"></td>
+   <td class="CLASS05202">
+     <div id="btnFilterName" class="FilterBtn">${thFilter}</div>
+     <div class="FilterSubMenu" id="btnFilterNameSub" style="display:none">
+@@ -153,6 +159,9 @@
+     string sTrId = "sv"#sysvar;
+     Write("<tr id='"#sTrId#"'>");
+     object sv = dom.GetObject(sysvar);
++    Write("<td style='text-align:center;' class='GrayBkg CLASS05206' >");
++      Write(sv.ID());
++    Write("</td>");
+     string CellBkg = "GrayBkg";
+     if (sv.Internal() == true) { CellBkg = "LightGrayBkg"; }
+     Write("<td style='text-align:center;' class='"#CellBkg#" CLASS05206' >");
+--- ./www/rega/pages/tabs/admin/views/programlist.htm.orig
++++ ./www/rega/pages/tabs/admin/views/programlist.htm
+@@ -58,6 +58,7 @@
+ <div id="prgcontent">
+ <table id="ProgramListTable" class="tTable"  border="0" cellpadding="0" cellspacing="0" style="display:none">
+   <colgroup>
++    <col/>
+     <col />
+     <col />
+     <col />
+@@ -65,6 +66,7 @@
+     <col style="width:250px;" />
+   </colgroup>
+     <tr>
++      <td class="thCell CLASS04900" >${thIseID}</td>
+       <%string sCssName="Sort"; if(firstSort||(system.GetSessionVar("sessionLS")=="name")){sCssName="SortSelected";} %>
+       <td class="thCell CLASS03302"><div id="name" class="<%Write(sCssName); %>" onclick="IseSort(arItems,'name',true);">${thName}</div></td>
+       <td class="thCell CLASS04900" >${thDescription}</td>
+@@ -74,6 +76,7 @@
+     </tr>
+   <tbody>
+     <tr>
++      <td class="CLASS03304"></td>
+       <td class="CLASS03304">
+         <div id="btnFilterName" class="FilterBtn">${thFilter}</div>
+         <div class="FilterSubMenu" id="btnFilterNameSub" style="display:none">
+@@ -130,6 +133,7 @@
+               string trId = "program"#o.ID();
+               WriteLine( '<tr id="'#trId#'" class="CLASS04901">' );
+               string sInactive = ""; if( !o.Active() ) { sInactive = "Inactive"; }
++              WriteLine( '<td style="text-align:center;" id="'#trId#'_id" class="tBodyCell'#sInactive#'">'#o.ID()#'</td>' );
+               WriteLine( '<td id="'#trId#'_name" class="tBodyCell'#sInactive#'">'#o.Name()#'</td>' );
+               WriteLine( '<td id="'#trId#'_info" class="tBodyCell'#sInactive#'">'#o.PrgInfo()#'</td>' );
+               WriteLine( '<td id="'#trId#'_cond" class="tBodyCell'#sInactive#'">' );
+@@ -225,6 +229,7 @@
+                 string trId = "program"#o.ID();
+                 string sInactive = ""; if( !o.Active() ) { sInactive = "Inactive"; }
+                 WriteLine( '<tr id="'#trId#'" class="CLASS04901">' );
++                WriteLine( '<td style="text-align:center;" id="'#trId#'_id" class="tBodyCell'#sInactive#'">'#o.ID()#'</td>' );
+                 WriteLine( '<td id="'#trId#'_name" class="tBodyCell'#sInactive#'">'#o.Name()#'</td>' );
+                 WriteLine( '<td id="'#trId#'_info" class="tBodyCell'#sInactive#'">'#o.PrgInfo()#'</td>' );
+                 WriteLine( '<td id="'#trId#'_cond" class="tBodyCell'#sInactive#'">' );
+@@ -461,6 +466,7 @@
+   updateActiveStatus = function(id,active)
+   {
+     var state = (active === true) ? "" : "Inactive";
++    jQuery("#program" + id + "_id").attr("class", "tBodyCell" + state)
+     jQuery("#program" + id + "_name").attr("class", "tBodyCell" + state);
+     jQuery("#program" + id + "_info").attr("class", "tBodyCell" + state);
+     jQuery("#program" + id + "_cond").attr("class", "tBodyCell" + state);
+--- ./www/webui/js/lang/de/translate.lang.js.orig
++++ ./www/webui/js/lang/de/translate.lang.js
+@@ -93,6 +93,7 @@
+     "footerBtnVirtualChannelsShow" : "Virtuelle Kan%E4le anzeigen",
+     "footerBtnVirtualChannelsHide" : "Virtuelle Kan%E4le ausblenden",
+     "footerBtnSaveNewFav" : "Auswahl als neue<br />Favoritenseite speichern",
++    "thIseID" : "ID",
+     "thSender" : "Sender",
+     "thLink" : "Verkn%FCpfung",
+     "thReceiver" : "Empf%E4nger",
+--- ./www/webui/js/lang/en/translate.lang.js.orig
++++ ./www/webui/js/lang/en/translate.lang.js
+@@ -92,6 +92,7 @@
+     "footerBtnVirtualChannelsShow" : "Show virtual channels",
+     "footerBtnVirtualChannelsHide" : "Hide virtual channels",
+     "footerBtnSaveNewFav" : "Save selection as new<br/>favourites page",
++    "thIseID" : "ID",
+     "thSender" : "Transmitters",
+     "thLink" : "Connections",
+     "thReceiver" : "Receiver",

@@ -83,7 +83,7 @@ case "$1" in
 
 	info)
 	  echo "Info: <center><b>CCUstomize Addon</b></center><br />" 
-	  echo "Version: 0.3.83.06.0001"                                                                                                                                                                                       
+	  echo "Version: 0.3.87.6.0001"                                                                                                                                                                                       
 	  echo "Name: CCUstomize Addon"                                                                                                                                                                                                        
 	  echo "Operations: uninstall"                                                                                                                                                                                                      
 	  #echo "Config-Url: ${CONFIG_URL}"                                                                                                                                                                                                 
